@@ -144,10 +144,8 @@ lista *invertir( lista **p){
 	}
 	return(inversa);
 }
-
-void ordenarinserccion(lista **p){
+void ordenarintercambio(lista **p){
 	lista *t = *p, *aux;
-		
 		while((t)&&(t->prox)){
 			aux=t;
 			  while(aux->prox){
@@ -158,27 +156,48 @@ void ordenarinserccion(lista **p){
 		t=t->prox;	
 		}
 }
+void ordenarinserccion(lista **p){
+   lista *t = *p;
+   int cont = 1,cursor,aux,k;
+   while(t){
+      cursor = cont;       aux = t->valor;    k = cursor-1;       
+      lista *prev = *p;
+      for(int i=0;i<k-1;i++)prev=prev->prox;
+      	while(k >= 0 && aux < prev->valor){
+      		
+         prev->prox->valor=prev->valor;
+         
+        	 lista *temp=*p;
+      		     for(int j=0;j<k-2;j++) temp=temp->prox;            
+        	 prev=temp;   ;   k--;}
+         
+      	 	lista *temp2 = *p;
+      			 for(int h=0;h<k;h++)temp2=temp2->prox;
+      	 	temp2->valor=aux;
+			      	 	
+      t=t->prox;
+      cont++;   
+   }
+}
+void ordenarburbuja(lista **p){
+     lista *actual = *p,*siguiente;
+     int t;
+     while(actual->prox != NULL){
+          siguiente = actual->prox;
+          while(siguiente!=NULL){
+               if(actual->valor > siguiente->valor){
+                    t = siguiente->valor;
+                    siguiente->valor = actual->valor;
+                    actual->valor = t;}
+               siguiente = siguiente->prox;}   
+          actual = actual->prox;
+          siguiente = actual->prox;
+	}
+}
 int vaciar(lista **p){
 	lista *aux = *p;
 	(*p)= aux->prox;
-	delete(aux);
-}
-void ordenarburbuja(lista *a){
-	lista *p=a, *ult = NULL;
-	int c = 1;
-		while((p)&&(c)){
-			p=a;c=0;
-			while((p)&&(p->prox!=ult)){
-				if((p->valor)>(p->prox!=ult)){
-					swap(&p->valor,&p->prox->valor);
-					c++;
-				}
-				p=p->prox;
-			}
-			ult = p;
-		}
-}
-
+	delete(aux);}
 
 int main(){
 	int op = -1, x = 0, contador = 0;
@@ -196,8 +215,10 @@ int main(){
 		printf("\n\t\t8.Insertar por final");
 		printf("\n\t\t9.Eliminar Primos");
 		printf("\n\t\t10.Invertir Lista");
-		printf("\n\t\t11.Ordenar Lista");
-		printf("\n\t\t12.Vaciar Lista");
+		printf("\n\t\t11.Ordenar Lista por Intercambio");
+		printf("\n\t\t12.Ordenar Lista por Burbuja");
+		printf("\n\t\t13.Ordenar Lista por Inserccion");
+		printf("\n\t\t14.Vaciar Lista");
 		printf("\n\t\t0.Salir");
 		printf("\n\n\t\tSu opcion => "); scanf("%i",&op);
 		
@@ -208,7 +229,7 @@ int main(){
 			case 3:printf("\n\n\t\tValor a eliminar ");
 					 scanf("%i",&x);
 					 eliminar(&p,x); break;
-			case 4:printf("\n\nIndique el valor a buscar ");
+			case 4:  printf("\n\nIndique el valor a buscar ");
 					 scanf("%i",&x);
 					 if (buscar(p,x)) printf("\n\n\t\tEl valor %i esta en la lista");
 					 else printf("\n\n\t\tNo esta %i en la lista");
@@ -222,14 +243,13 @@ int main(){
 			case 8: printf("\n\n\t\tValor a insertar "); scanf("%i",&x); insertarporf(&p,x); break;
 			case 9: eliminarprimo(&p); break;
 			case 10: mostrar(invertir(&p),'P'); break;
-			case 11: ordenarinserccion(&p); break;
-			case 12: while(p!=NULL){
-				     vaciar(&p);} break;
-			case 13: ordenarburbuja(p); break;	     
+			case 11: ordenarintercambio(&p); break;
+			case 12: ordenarburbuja(&p); break;
+			case 13: ordenarinserccion(&p);	break;     
+			case 14: while(p)vaciar(&p); break;
 		}
 		printf("\n\n\t\t");
 		system("pause");
 	}
 	return 0;
 }
-
